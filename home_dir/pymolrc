@@ -1,0 +1,54 @@
+_ feedback push
+_ feedback disable,all,everything
+
+## Two-button mouse
+set button_mode_name, 2-Btn. Selecting
+set mouse_selection_mode, 0
+
+## Aliases
+alias clear, mstop; mclear; hide all
+alias nogui, set internal_gui=0
+alias gui, set internal_gui=1
+alias shiny, set spec_power=250; set spec_refl=1.5; set antialias=2; ray
+alias stop, quit
+alias exit, quit
+alias white, bg_color white; set depth_cue=0; set ray_trace_fog=0
+
+## Default fetch location
+# set fetch_path, ~/pdbs
+
+## Ray tracing
+set ray_trace_mode, 0
+# set ray_trace_fog, 0
+set ray_opaque_background, 0
+# set ray_shadow, 0
+
+# set depth_cue, 0
+set transparency_mode, 3
+
+set antialias, 2
+set antialias_shader, 2
+
+set ribbon_width, 8
+set cartoon_fancy_helices, 1
+
+set defer_builds_mode, 3
+set async_builds, 1
+
+from pymol import cmd
+import sys
+
+run ~/Rosetta/tools/antibody/colorcdrs.py
+run ~/bin/obj_arrows.py
+
+alias ribbonize,\
+    hide; show cartoon; set cartoon_fancy_helices, 1; \
+    hide cartoon, ( resname A or resname G or resname C or resname U or resname T ); \
+    show sticks, ( resname A or resname G or resname C or resname U or resname T ); \
+    util.rainbow; color hotpink, ( resname A or resname G or resname C or resname U or resname T )
+
+
+## END COMMANDS
+## Explicitly re-enable feedback before popping
+_ feedback enable, cmd parser, warnings errors results
+_ feedback pop

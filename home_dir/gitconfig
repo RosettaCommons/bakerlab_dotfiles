@@ -1,0 +1,23 @@
+[credential]
+	helper = cache --timeout=3600
+[core]
+	autocrlf = input
+[user]
+	name = Brian D. Weitzner
+	email = brian.weitzner@gmail.com
+	signingkey = 09E370D51B097A3B
+[push]
+	default = simple
+[filter "lfs"]
+	clean = git-lfs clean %f
+	smudge = git-lfs smudge %f
+	required = true
+[difftool.latex]
+	        cmd = ~/bin/git-latexdiff "$LOCAL" "$REMOTE"
+[difftool]
+	        prompt = false
+[alias]
+	        ldiff = difftool -t latex
+
+[commit]
+	#gpgsign = true
