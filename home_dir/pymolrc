@@ -48,7 +48,77 @@ alias ribbonize,\
     util.rainbow; color hotpink, ( resname A or resname G or resname C or resname U or resname T )
 
 
+##### Big chunk from the bakerlab historic pymolrc ####
+
+set cylinder_shader_ff_workaround, 1
+
+sys.path.append("~/pymol_scripts")
+
+from pymol_scripts import *
+
+run ~/pymol_scripts/all_commands.py
+
+run ~/pymol_scripts/tmalign.py
+
+run ~/pymol_scripts/rawAsBfact.py
+run ~/pymol_scripts/roeAsBfact.py
+
+run ~/pymol_scripts/PDBinfo.py
+
+run ~/pymol_scripts/color_h.py
+run ~/pymol_scripts/pymol_brian.py
+
+aaindex.init("~/pymol_scripts/aaindex")
+
+
+#######################################################
+
+
 ## END COMMANDS
 ## Explicitly re-enable feedback before popping
 _ feedback enable, cmd parser, warnings errors results
 _ feedback pop
+
+
+
+##### Big chunk from the bakerlab historic pymolrc ####
+
+
+
+alias pbi, color gray80, chainA; color white, chainB; aaindex2b DVLA000001; spectrum b, red_green, chainB; util.cnc;
+alias ipbi, color gray80, chainA; color white, chainB; aaindex2b DVLA000001; spectrum b, red_green, chainB and interface; util.cnc;
+
+alias npbi, color gray80, chainA; color white, chainB; aaindex2b DVLA000002; spectrum b, red_green, chainB; util.cnc;
+alias inpbi, color gray80, chainA; color white, chainB; aaindex2b DVLA000002; spectrum b, red_green, chainB and interfaceB; util.cnc;
+
+alias dl, color gray80, chainA; color white, chainB; aaindex2b DVLA000003; spectrum b, green_red, chainB; util.cnc;
+alias idl, color gray80, chainA; color white, chainB; aaindex2b DVLA000003; spectrum b, green_red, chainB and interfaceB; util.cnc;
+
+alias hydro, color gray80, chainA; color white, chainB; aaindex2b NADH010101; spectrum b, green_white_yellow, chainB; util.cnc;
+alias ihydro, color gray80, chainA; color white, chainB; aaindex2b NADH010101; spectrum b, green_white_yellow, chainB and interfaceB; util.cnc;
+
+alias alpha, color gray80, chainA; color white, chainB; aaindex2b CHOP780201; spectrum b, red_green, chainB; util.cnc;
+alias ialpha, color gray80, chainA; color white, chainB; aaindex2b CHOP780201; spectrum b, red_green, chainB and interfaceB; util.cnc;
+
+alias beta, color gray80, chainA; color white, chainB; aaindex2b CHOP780202; spectrum b, red_green, chainB; util.cnc;
+alias ibeta, color gray80, chainA; color white, chainB; aaindex2b CHOP780202; spectrum b, red_green, chainB and interfaceB; util.cnc;
+
+alias stik, hide all; cmd.show("cartoon"); cmd.show("sticks","not hydro");
+alias cbc, hide all; cmd.show("cartoon"); util.cbc;
+alias cnc, hide all; cmd.show("cartoon"); cmd.show("sticks","not hydro"); cmd.util.cbc("all"); cmd.util.cnc("all");
+alias cg, object=cmd.get_names()[0]; cmd.view('v', 'store'); util.protein_vacuum_esp(object, mode=2, quiet=0); cmd.disable(object + "_e_pot"); cmd.enable(object); cmd.view('v', 'recall');
+alias surf, cmd.extract('target', 'chainA'); cmd.view('v', 'store'); util.protein_vacuum_esp('target', mode=2, quiet=0); cmd.disable('target' + "_e_pot"); cmd.enable('target'); cmd.view('v', 'recall'); cmd.zoom('interface'); cmd.create('inter_bawls','interfaceB'); cmd.show('spheres','inter_bawls'); cmd.disable('inter_bawls'); cmd.create('inter_cage',"interfaceB"); cmd.show('mesh','inter_cage'); cmd.color('magenta','inter_cage'); cmd.util.cnc('inter_cage'); cmd.disable('inter_cage');
+
+#from Longxing
+#alias rifres, set_cycler_command "stix; run ~/home/longxing/bin/rifres.py"
+
+alias bam, pdbdircyclerlite; set_cycler_command 'stix; show cartoon';
+
+alias pick3, pdblistfilecyclerlite pick3.list; set_cycler_command 'stix; zoom chainA, buffer=4'
+
+alias bbo, hide all; show sticks, name Ca+C+O+N+CA
+alias hetsee, hide all; show cartoon; alignto asym*; zoom; select interfaceA, asym and chain A within 10 of (asym and chain B); select interfaceB, asym and chain B within 10 of (asym and chain A); select interfaceAA, not hydro within 3 of interfaceA; select interfaceBB, not hydro within 3 of interfaceB; show lines, interfaceAA; show lines, interfaceBB; select interfaceOri, resi and asym and interfaceAA or asym and interfaceBB; show sticks, interfaceOri; disable interface*; disable *_2_S* or *_3_S* or *_4_S* or or *_5_S*
+
+
+
+#######################################################

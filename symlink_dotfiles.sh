@@ -9,6 +9,7 @@
 
 dir=`pwd`/home_dir                 # dotfiles directory
 old_dir=$HOME/dotfiles_old         # backup directory for old dotfiles
+pymol_scripts_dir=`pwd`/pymol_scripts # absolute path to pymol_scripts
 
 zsh_theme=verbose.zsh-theme        # zsh theme file
 zsh_dir=$HOME/.oh-my-zsh/custom    # oh my zsh installation directory
@@ -39,6 +40,8 @@ fi
 for dotfile in `ls $dir`; do
     link_dotfile $HOME/.$dotfile $dir/$dotfile $dotfile
 done
+
+link_dotfile $HOME/pymol_scripts $pymol_scripts_dir
 
 # Symlink the zsh theme (only if oh my zsh is installed)
 if [[ -e $zsh_dir ]]; then
