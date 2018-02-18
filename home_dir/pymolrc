@@ -71,20 +71,6 @@ run ~/pymol_scripts/pymol_brian.py
 aaindex.init("~/pymol_scripts/aaindex")
 
 
-#######################################################
-
-
-## END COMMANDS
-## Explicitly re-enable feedback before popping
-_ feedback enable, cmd parser, warnings errors results
-_ feedback pop
-
-
-
-##### Big chunk from the bakerlab historic pymolrc ####
-
-
-
 alias pbi, color gray80, chainA; color white, chainB; aaindex2b DVLA000001; spectrum b, red_green, chainB; util.cnc;
 alias ipbi, color gray80, chainA; color white, chainB; aaindex2b DVLA000001; spectrum b, red_green, chainB and interface; util.cnc;
 
@@ -122,3 +108,9 @@ alias hetsee, hide all; show cartoon; alignto asym*; zoom; select interfaceA, as
 
 
 #######################################################
+
+## END COMMANDS
+## Explicitly re-enable feedback before popping
+_ feedback enable, cmd parser, warnings errors results
+_ feedback pop
+
