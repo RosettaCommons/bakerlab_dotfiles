@@ -12,3 +12,6 @@
 	        prompt = false
 [alias]
 	        ldiff = difftool -t latex
+[user]
+	name = Brian D. Weitzner
+	email = brian.weitzner@gmail.com
