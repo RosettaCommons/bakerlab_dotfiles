@@ -12,10 +12,10 @@ export ROSETTA3_DB=$rosetta_main/database
 number_of_threads=1
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
 	# GNU/Linux
-	number_of_threads=$(grep -c ^processor /proc/cpuinfo)
+	number_of_threads=$(( $(grep -c ^processor /proc/cpuinfo) - 1 ))
 else
 	# BSD/macOS
-	number_of_threads=$(sysctl -n hw.ncpu)
+	number_of_threads=$(( $(sysctl -n hw.ncpu) - 1 ))
 fi
 
 alias build_rosetta_for_testing="cd $rosetta_src_dir; nice ./scons.py -j$number_of_threads && nice ./scons.py -j$number_of_threads cat=test && nice ./scons.py -j$number_of_threads mode=release bin"
@@ -23,5 +23,4 @@ alias build_rosetta_for_testing="cd $rosetta_src_dir; nice ./scons.py -j$number_
 export PYROSETTA=$HOME/PyRosetta
 function update_pyrosetta() {
 	current_dir=$PWD;cd $PYROSETTA && git fetch --all && git reset --hard origin/master && git clean -fd && cd setup && python setup.py install && echo PyRosetta has been successfully updated.; cd $current_dir;
-	#current_dir=$PWD;cd $PYROSETTA && git fetch --all && git reset --hard origin/master && git clean -fd; cd $current_dir;
 }

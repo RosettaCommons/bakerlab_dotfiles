@@ -72,5 +72,3 @@ alias ll='ls -hlt'
 alias digs="ssh digs"
 alias jojo="ssh jojo"
 
-# source the intel distribution conda environment
-source activate idp
