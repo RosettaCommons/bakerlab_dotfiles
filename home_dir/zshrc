@@ -64,8 +64,8 @@ else
     # Assumes:  (1) you have the same username on localhost and the digs;
     #           (2) the mount point is $HOME/digs and is an empty directory that exists; 
     #           (3) you followed the instructions on the wiki: http://wiki.baker/index.php/Mounting_IPD_Filesystems
-		# Set the name of the mount point here
-		mount_pt="digs"
+    # Set the name of the mount point here
+    mount_pt="digs"
     alias mount_digs="sudo sshfs -o defer_permissions,follow_symlinks,allow_other,reconnect,volname=$mount_pt $USER@share:/home/$USER $HOME/$mount_pt"
     alias unmount_digs="sudo umount $HOME/$mount_pt"
 fi
