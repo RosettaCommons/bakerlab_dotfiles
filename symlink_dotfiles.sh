@@ -61,4 +61,5 @@ if [[ ${#KEY_ID} -gt 0 ]]; then
     git config --global commit.gpgsign true
 fi
 
+git config --global core.excludesfile $HOME/.gitignore_global
 echo "Test out your configurations and, if it all looks good, delete" $old_dir
