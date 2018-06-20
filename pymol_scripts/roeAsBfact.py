@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-
+from __future__ import print_function
 from pymol import cmd
 from numpy import *
 
@@ -35,55 +35,55 @@ def zero_residues(sel1,offset=0,chains=0):
 
 def rener(inName=""):
 #zero the indexes
-	zero_residues("all", 1, 1)
+    zero_residues("all", 1, 1)
 #Read the values in
-	infileName=""
-	if (inName==""):
-		infileName=cmd.get_names()[0];
-	else:
-		infileName=inName
-	fileName=infileName+".pdb"
-	cmd.alter("all", "b=0.0")
-	file = open(fileName, 'r')
-	table = [row.strip().split() for row in file]
-	bVals = []
-	did_start=False
-	rowcount=0
-	for i in table:
-		if ( i[0] == "#BEGIN_POSE_ENERGIES_TABLE" ):
-			did_start=True
-			rowcount=0
-			continue
-		elif did_start:
-			rowcount+=1
-			if (rowcount>3):
-				if (i[0] == "#END_POSE_ENERGIES_TABLE"):
-                                	did_start=False
-					continue
-				resn=i[0].split('_')[-1]	
-				selection="resi %s" % resn
-				val=i[-1]
-				#if (val > 1.67):
-				#	val=1.67
-				#elif (val < 0.08):
-				#	val=0.08
-				bfac=val
-				bVals.append([selection, bfac])
-	numres=len(bVals)
-	bValsAvg = zeros(numres)
-	for i in range( 0, numres):
-		bValsAvg[i]=float(bVals[i][1])
-#		for j in range( 0, frag_size):
-#			tmpval=float(bVals[i][1])
-#			if(bValsAvg[i+j] < tmpval):
-#				bValsAvg[i+j] = tmpval
-#			bValsAvg[i]+= (float(bVals[i+j][1])/float(frag_size))
-#	bValsAvg=bValsAvg+bValsAvg[i].min()
-	for i in range( 0, numres):
-		print bVals[i][0], bValsAvg[i]
-		bfac = ("b=%f" % bValsAvg[i])
-		cmd.alter(bVals[i][0], bfac)
-	#cmd.hide("all")
-	#cmd.show("cartoon")
-#	cmd.spectrum("b", "blue_white_red", infileName, bValsAvg.min(), bValsAvg.max(), "1")
-	cmd.spectrum("b", "blue_white_red", infileName, -2.0, 0.0, "1")
+    infileName=""
+    if (inName==""):
+        infileName=cmd.get_names()[0];
+    else:
+        infileName=inName
+    fileName=infileName+".pdb"
+    cmd.alter("all", "b=0.0")
+    file = open(fileName, 'r')
+    table = [row.strip().split() for row in file]
+    bVals = []
+    did_start=False
+    rowcount=0
+    for i in table:
+        if ( i[0] == "#BEGIN_POSE_ENERGIES_TABLE" ):
+            did_start=True
+            rowcount=0
+            continue
+        elif did_start:
+            rowcount+=1
+            if (rowcount>3):
+                if (i[0] == "#END_POSE_ENERGIES_TABLE"):
+                    did_start=False
+                    continue
+                resn=i[0].split('_')[-1]    
+                selection="resi %s" % resn
+                val=i[-1]
+                #if (val > 1.67):
+                #   val=1.67
+                #elif (val < 0.08):
+                #   val=0.08
+                bfac=val
+                bVals.append([selection, bfac])
+    numres=len(bVals)
+    bValsAvg = zeros(numres)
+    for i in range( 0, numres):
+        bValsAvg[i]=float(bVals[i][1])
+#       for j in range( 0, frag_size):
+#           tmpval=float(bVals[i][1])
+#           if(bValsAvg[i+j] < tmpval):
+#               bValsAvg[i+j] = tmpval
+#           bValsAvg[i]+= (float(bVals[i+j][1])/float(frag_size))
+#   bValsAvg=bValsAvg+bValsAvg[i].min()
+    for i in range( 0, numres):
+        print(bVals[i][0], bValsAvg[i])
+        bfac = ("b=%f" % bValsAvg[i])
+        cmd.alter(bVals[i][0], bfac)
+    #cmd.hide("all")
+    #cmd.show("cartoon")
+#   cmd.spectrum("b", "blue_white_red", infileName, bValsAvg.min(), bValsAvg.max(), "1")
+    cmd.spectrum("b", "blue_white_red", infileName, -2.0, 0.0, "1")

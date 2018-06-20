@@ -50,13 +50,9 @@ alias ribbonize,\
 
 ##### Big chunk from the bakerlab historic pymolrc ####
 
-set cylinder_shader_ff_workaround, 1
-
 sys.path.append("~/pymol_scripts")
 
 from pymol_scripts import *
-
-run ~/pymol_scripts/all_commands.py
 
 run ~/pymol_scripts/tmalign.py
 

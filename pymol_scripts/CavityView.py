@@ -2,9 +2,9 @@
 import pymol
 from pymol import *
 
-from rosetta_vdw import useRosettaRadii
-from PackingMeasureUtils import useTempRadii
-from GenUtils import zload
+from .rosetta_vdw import useRosettaRadii
+from .PackingMeasureUtils import useTempRadii
+from .GenUtils import zload
 
 def viewCav(prot = 'all' , lig = 'hetatm', niram = 'cbas'):
 	cmd.hide('everything')
