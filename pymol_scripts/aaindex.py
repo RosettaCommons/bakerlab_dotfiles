@@ -10,6 +10,7 @@ PyMOL commands:
     pmf
 '''
  
+from __future__ import print_function
 import sys, os
  
 _aaindex = dict()
@@ -25,7 +26,7 @@ def search(pattern, searchtitle=True, casesensitive=False):
         pattern = pattern.lower()
         whatcase = lambda i: i.lower()
     matches = []
-    for record in _aaindex.itervalues():
+    for record in _aaindex.values():
         if pattern in whatcase(record.desc) or searchtitle and pattern in whatcase(record.title):
             matches.append(record)
     return matches
@@ -36,7 +37,7 @@ def grep(pattern):
     insensitive) and print results on standard output.
     '''
     for record in search(pattern):
-        print record
+        print(record)
  
 class Record:
     '''
@@ -64,7 +65,7 @@ class Record:
     def __getitem__(self, aai):
         return self.get(aai)
     def median(self):
-        x = sorted(filter(None, self.index.values()))
+        x = sorted([_f for _f in list(self.index.values()) if _f])
         half = len(x)/2
         if len(x) % 2 == 1:
             return x[half]
@@ -102,7 +103,7 @@ class MatrixRecord(Record):
     def median(self):
         x = []
         for y in self.index:
-            x.extend(filter(None, y))
+            x.extend([_f for _f in y if _f])
         x.sort()
         if len(x) % 2 == 1:
             return x[len(x)/2]
@@ -133,7 +134,8 @@ def init(path=None, index='13'):
         for path in [os.path.split(__file__)[0], '.', cmd.get('fetch_path')]:
             if os.path.exists(os.path.join(path, 'aaindex' + index[0])):
                 break
-        print >> sys.stderr, 'path =', path
+        print('path =', path, file=sys.stderr)
+    path = os.path.expanduser(path)
     if '1' in index:
         _parse(path + '/aaindex1', Record)
     if '2' in index:
@@ -151,11 +153,11 @@ def _parse(filename, rec, quiet=True):
     `MarixRecord` for aaindex2 and aaindex3.
     '''
     if not os.path.exists(filename):
-        import urllib
+        import urllib.request, urllib.parse, urllib.error
         url = 'ftp://ftp.genome.jp/pub/db/community/aaindex/' + os.path.split(filename)[1]
-        print 'Downloading "%s"' % (url)
-        filename = urllib.urlretrieve(url, filename)[0]
-        print 'Saved to "%s"' % (filename)
+        print('Downloading "%s"' % (url))
+        filename = urllib.request.urlretrieve(url, filename)[0]
+        print('Saved to "%s"' % (filename))
     f = open(filename)
  
     current = rec()
@@ -190,15 +192,15 @@ def _parse(filename, rec, quiet=True):
         elif key == 'I ':
             a = line[1:].split()
             if a[0] != 'A/L':
-                current.extend(map(_float_or_None, a))
+                current.extend(list(map(_float_or_None, a)))
             elif list(Record.aakeys) != [i[0] for i in a] + [i[-1] for i in a]:
-                print 'Warning: wrong amino acid sequence for', current.key
+                print('Warning: wrong amino acid sequence for', current.key)
             else:
                 try:
                     assert list(Record.aakeys[:10]) == [i[0] for i in a]
                     assert list(Record.aakeys[10:]) == [i[2] for i in a]
                 except:
-                    print 'Warning: wrong amino acid sequence for', current.key
+                    print('Warning: wrong amino acid sequence for', current.key)
         elif key =='M ':
             a = line[2:].split()
             if a[0] == 'rows':
@@ -214,9 +216,9 @@ def _parse(filename, rec, quiet=True):
                     current.cols[aa] = i
                     i += 1
             else:
-                current.extend(map(_float_or_None, a))
+                current.extend(list(map(_float_or_None, a)))
         elif not quiet:
-            print 'Warning: line starts with "%s"' % (key)
+            print('Warning: line starts with "%s"' % (key))
  
         lastkey = key
  
@@ -284,7 +286,7 @@ EXAMPLE
     median = entry.median()
  
     if int(quiet) != 0:
-        print entry.desc.strip()
+        print(entry.desc.strip())
  
     def lookup(resn):
         one_letter = to_one_letter_code.get(resn, 'X')
@@ -344,16 +346,16 @@ EXAMPLES
     if len(cutoff) == len(key):
         cutoff = [0.0] + list(cutoff)
     if len(cutoff) != len(key) + 1:
-        print 'Error: Number of keys and number of cutoffs inconsistent'
+        print('Error: Number of keys and number of cutoffs inconsistent')
         return
     state = int(state)
     quiet = int(quiet)
     if len(selection2) == 0:
         selection2 = selection1
     if not quiet and len(key) > 1:
-        print 'Distance shells:'
+        print('Distance shells:')
         for i in range(len(key)):
-            print '%s %.1f-%.1f' % (key[i], cutoff[i], cutoff[i+1])
+            print('%s %.1f-%.1f' % (key[i], cutoff[i], cutoff[i+1]))
  
     idmap = dict()
     cmd.iterate_state(state, '(%s) or (%s)' % (selection1, selection2),
@@ -362,14 +364,14 @@ EXAMPLES
     pairs = cmd.find_pairs(selection1, selection2, cutoff=max(cutoff),
             state1=state, state2=state)
     if len(pairs) == 0:
-        print 'Empty pair list'
+        print('Empty pair list')
         return 0.0
  
-    matrix = map(get, key)
+    matrix = list(map(get, key))
     for i in matrix:
         assert isinstance(i, MatrixRecord)
  
-    i_list = range(len(key))
+    i_list = list(range(len(key)))
     u_sum = 0
     count = 0
     for id1, id2 in pairs:
@@ -384,11 +386,11 @@ EXAMPLES
                     u_sum += matrix[i].get(aa1, aa2)
                     count += 1
                 except:
-                    print 'Failed for', a1[0], a2[0]
+                    print('Failed for', a1[0], a2[0])
  
     value = float(u_sum) / twoN
     if not quiet:
-        print 'PMF: %.4f (%d contacts, %d residues)' % (value, count, twoN)
+        print('PMF: %.4f (%d contacts, %d residues)' % (value, count, twoN))
     return value
  
 try:
@@ -396,7 +398,7 @@ try:
     cmd.extend('aaindex2b', aaindex2b)
     cmd.extend('pmf', pmf)
     def pymol_auto_arg_update():
-        aaindexkey_sc = cmd.Shortcut(_aaindex.keys())
+        aaindexkey_sc = cmd.Shortcut(list(_aaindex.keys()))
         cmd.auto_arg[0].update({
             'aaindex2b'   : [ aaindexkey_sc              , 'aaindexkey'      , ', ' ],
             'pmf'         : [ aaindexkey_sc              , 'aaindexkey'      , ', ' ],

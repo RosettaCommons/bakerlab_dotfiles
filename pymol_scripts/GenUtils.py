@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os
 import pymol
 from pymol import cmd
@@ -5,7 +6,7 @@ from pymol import cmd
 import sys
 import zlib
 import glob
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import gzip
 import re
 
@@ -39,16 +40,16 @@ def zload(fname,name=None):
 	if not os.path.isfile(fname):
 		# If fname is not 4 chars and the file doesn't exist, print an error message
 		if len(name) != 4:
-			print "Error, file does not exist"
+			print("Error, file does not exist")
 			return
 
 		# Same error if the first char is not a number
 		if not re.match('[0-9]', name):
-			print "Error, file does not exist"
+			print("Error, file does not exist")
 			return
 
 		# If the length is 4 and the first char is a number, this is presumably a standard PDB ID
-		print "Using PDB file "+name+" from repository..."
+		print("Using PDB file "+name+" from repository...")
 
 		# If the filename is 4 chars, goto the PDB homedir repository looking for it
 		# Assemble the PDB name (with .gz) in the homedir repository
@@ -59,11 +60,11 @@ def zload(fname,name=None):
 		# If it's not found there, download it and add it to the PDB homedir repository so we can continue
 		if not os.path.isfile(fname):
 			pdburl = "http://www.rcsb.org/pdb/files/"+name+".pdb"
-			response = urllib.urlopen(pdburl)
+			response = urllib.request.urlopen(pdburl)
 			f = gzip.open(fname, 'wb')
 			f.write( response.read() )
 			f.close()
-			print "Downloaded PDB "+name
+			print("Downloaded PDB "+name)
 
 	pdbstr=''
 
@@ -73,9 +74,9 @@ def zload(fname,name=None):
 		input=open(fname)
 		magic=input.read(2)
 		if magic!='\037\213':
-			print 'Not a gzipped file'
+			print('Not a gzipped file')
 		if ord(input.read(1))!=8:
-			print 'Unknown compression method' ; sys.exit(0)
+			print('Unknown compression method') ; sys.exit(0)
 		flag=ord(input.read(1))
 		input.read(4+1+1) # Discard modification time, extra flags, and OS byte.
 

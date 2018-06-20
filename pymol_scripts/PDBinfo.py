@@ -1,6 +1,6 @@
 # Derrick
 # This script should create pymol objects containing all residues belonging to a PODBinfo label
-
+from __future__ import print_function
 
 import re, string, gzip
 from pymol import cmd, cgo
@@ -11,24 +11,24 @@ def create_PDBinfo_objs( lines, name ):
 
         PDBinfo_objects = []
         PDBinfo_dict = {}
-	for line in lines:
+        for line in lines:
                 split_line = line.split()
-		split_line = split_line[2:]
-		for info_name in split_line[1:]:
-			PDBinfo_dict.setdefault(info_name, []).append(split_line[0])
-	for key in PDBinfo_dict:
-		print key, "residues = ",PDBinfo_dict[key]
-	for key in PDBinfo_dict:
-		print key
-		residues = ""
-		for residue in PDBinfo_dict[key]:
-			residues = residues + "," + str(residue)
-			print residues
-		cmd.select(key, "resi %s" % (residues[1:]))
-		cmd.create("%s_obj" %key, "%s" %key)
-		cmd.delete("%s" %key)
+                split_line = split_line[2:]
+                for info_name in split_line[1:]:
+                        PDBinfo_dict.setdefault(info_name, []).append(split_line[0])
+        for key in PDBinfo_dict:
+                print(key, "residues = ",PDBinfo_dict[key])
+        for key in PDBinfo_dict:
+                print(key)
+                residues = ""
+                for residue in PDBinfo_dict[key]:
+                        residues = residues + "," + str(residue)
+                        print(residues)
+                cmd.select(key, "resi %s" % (residues[1:]))
+                cmd.create("%s_obj" %key, "%s" %key)
+                cmd.delete("%s" %key)
 
-#		match = hb_re.search(line)
+#               match = hb_re.search(line)
 #                if match == None: continue
 #                (d_resi, d_chain, d_atom, a_resi, a_chain, a_atom, energy) = match.groups()
 #                energy = float(energy)
@@ -58,16 +58,16 @@ def get_PDBinfo():
                 source = None
                 if os.path.exists( '%s.pdb' % name ): source = file( name + '.pdb', 'r' )
                 elif os.path.exists( '%s.pdb.gz' % name ): source = gzip.open( '%s.pdb.gz' % name, 'r' )
-                else: print 'cannot find source pdb file for', name; continue
+                else: print('cannot find source pdb file for', name); continue
 
                 PDBinfo_lines = [];
 
                 for line in source:
                         if line.startswith('REMARK PDBinfo-LABEL'): PDBinfo_lines.append(line)
 
-                if PDBinfo_lines == []: print 'no PDBinfo lines found for %s' % name
+                if PDBinfo_lines == []: print('no PDBinfo lines found for %s' % name)
                 else:
-                        print 'Showing Rosetta PDBinfo for %s...' % name
+                        print('Showing Rosetta PDBinfo for %s...' % name)
                         create_PDBinfo_objs( PDBinfo_lines, name )
 
-cmd.extend('PDBinfo',get_PDBinfo)			
+cmd.extend('PDBinfo',get_PDBinfo)                       

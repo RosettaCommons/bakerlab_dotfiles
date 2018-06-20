@@ -35,11 +35,12 @@
 # Usage:
 # color_h (selection)
 #
+from __future__ import print_function
 from pymol import cmd
 
 def color_h(selection='all'):
     s = str(selection)
-    print s
+    print(s)
     cmd.set_color('color_ile',[0.996,0.062,0.062])
     cmd.set_color('color_phe',[0.996,0.109,0.109])
     cmd.set_color('color_val',[0.992,0.156,0.156])
@@ -84,7 +85,7 @@ cmd.extend('color_h',color_h)
 
 def color_h2(selection='all'):
     s = str(selection)
-    print s
+    print(s)
     cmd.set_color("color_ile2",[0.938,1,0.938])
     cmd.set_color("color_phe2",[0.891,1,0.891])
     cmd.set_color("color_val2",[0.844,1,0.844])
