@@ -8,7 +8,7 @@ Is meant to be used for similar proteins, e.g. close homologs or point mutants,
 to visualize their differences.
  
 '''
- 
+from __future__ import print_function
 import pymol
 from pymol import cmd
  
@@ -47,11 +47,11 @@ def getBlosum90ColorName(aa1, aa2):
        red very disimilar.'''
     # return red for residues that are not part of the 20 amino acids
     if aa1 not in aa_3l or aa2 not in aa_3l:
-	return 'red'
+        return 'red'
  
     # if the two are the same, return blue
     if aa1 == aa2:
-	return 'blue'
+        return 'blue'
     i1 = aa_3l[aa1]
     i2 = aa_3l[aa2]
     b = blosum90[i1][i2]
@@ -108,10 +108,10 @@ def color_by_mutation(obj1, obj2, waters=0, labels=0):
     from pymol import stored, CmdException
  
     if cmd.count_atoms(obj1) == 0:
-        print '%s is empty'%obj1
+        print('%s is empty'%obj1)
         return
     if cmd.count_atoms(obj2) == 0:
-        print '%s is empty'%obj2
+        print('%s is empty'%obj2)
         return
     waters = int(waters)
     labels = int(labels)
@@ -165,7 +165,7 @@ def color_by_mutation(obj1, obj2, waters=0, labels=0):
             colors.append((c, '%s and resi %s and chain %s and elem C'%(obj2, i2, c2)))
  
     if mutant_selection == '':
-        print ' Error: No mutations found'
+        print(' Error: No mutations found')
         raise CmdException
  
     # create selections        
@@ -193,14 +193,14 @@ def color_by_mutation(obj1, obj2, waters=0, labels=0):
         cmd.show('spheres', 'resn HOH and (%s or %s)'%(obj2, obj1))
         cmd.color('red', 'resn HOH and %s'%obj1)
         cmd.color('salmon', 'resn HOH and %s'%obj2)
-    print '''
+    print('''
              Mutations are highlighted in blue and red.
              All mutated sidechains of %s are colored blue, the corresponding ones from %s are
              colored on a spectrum from blue to red according to how similar the two amino acids are
              (as measured by the BLOSUM90 substitution matrix).
              Aligned regions without mutations are colored white.
              Regions not used for the alignment are gray.
-             NOTE: There could be mutations in the gray regions that were not detected.'''%(obj2, obj1)
+             NOTE: There could be mutations in the gray regions that were not detected.'''%(obj2, obj1))
     cmd.delete(aln)
     cmd.deselect()
  
@@ -253,10 +253,10 @@ def muta():
     labels = 0
  
     if cmd.count_atoms(obj1) == 0:
-        print '%s is empty'%obj1
+        print('%s is empty'%obj1)
         return
     if cmd.count_atoms(obj2) == 0:
-        print '%s is empty'%obj2
+        print('%s is empty'%obj2)
         return
     waters = int(waters)
     labels = int(labels)
@@ -310,7 +310,7 @@ def muta():
             colors.append((c, '%s and resi %s and chain %s and elem C'%(obj2, i2, c2)))
  
     if mutant_selection == '':
-        print ' Error: No mutations found'
+        print(' Error: No mutations found')
         raise CmdException
  
     # create selections        
@@ -340,14 +340,14 @@ def muta():
         cmd.show('spheres', 'resn HOH and (%s or %s)'%(obj2, obj1))
         cmd.color('red', 'resn HOH and %s'%obj1)
         cmd.color('salmon', 'resn HOH and %s'%obj2)
-    print '''
+    print('''
              Mutations are highlighted in blue and red.
              All mutated sidechains of %s are colored blue, the corresponding ones from %s are
              colored on a spectrum from blue to red according to how similar the two amino acids are
              (as measured by the BLOSUM90 substitution matrix).
              Aligned regions without mutations are colored white.
              Regions not used for the alignment are gray.
-             NOTE: There could be mutations in the gray regions that were not detected.'''%(obj2, obj1)
+             NOTE: There could be mutations in the gray regions that were not detected.'''%(obj2, obj1))
     cmd.delete(aln)
     cmd.deselect()
     cmd.zoom("interface")

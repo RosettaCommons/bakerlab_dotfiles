@@ -1,10 +1,11 @@
+from __future__ import print_function
 import pymol
 from pymol import cmd
 import sys,os,random
 from math import floor
 
 sys.path.append("/Users/sheffler/svn/trunk/python_scripts/pymol_scripts")
-from GenUtils import zload
+from .GenUtils import zload
 
 rainbow = ['0xCCFF00', '0xFF0000', '0xCC00FF', '0x00FF66', '0x80FF00', '0x0019FF', '0x00FF19', '0x33FF00', '0xFF0099', '0xFF004D', '0xFF00E6', '0x00FFFF', '0x0066FF', '0x8000FF', '0x00B3FF', '0xFFE500', '0x00FFB2', '0xFF4C00', '0x3300FF', '0xFF9900']
 
@@ -20,13 +21,13 @@ def useRosettaRadii():
 def expandRadii(delta=1.0, sel='all'):
 	for a in cmd.get_model(sel).atom:	
 		r = float(a.vdw) + float(delta)
-		cmd.alter("index "+`a.index`,'vdw='+`r`)
+		cmd.alter("index "+repr(a.index),'vdw='+repr(r))
 	cmd.rebuild(sel,"spheres")
 
 def contractRadii(delta=1.0, sel='all'):
 	for a in cmd.get_model(sel).atom:	
 		r = float(a.vdw) - float(delta)
-		cmd.alter("index "+`a.index`,'vdw='+`r`)
+		cmd.alter("index "+repr(a.index),'vdw='+repr(r))
 	cmd.rebuild(sel,"spheres")
 
 def useOccColors(sel="all"):	
@@ -36,8 +37,8 @@ def useOccColors(sel="all"):
 	colors = rainbow
    # random.shuffle(colors)
    # colors *= len(d)/len(colors)+1
-	for ii in range(len(d.keys())):
-		cmd.color( colors[ii] ,"%s and q=%i"%(sel,d.keys()[ii]))
+	for ii in range(len(list(d.keys()))):
+		cmd.color( colors[ii] ,"%s and q=%i"%(sel,list(d.keys())[ii]))
 
 def useTempColors(sel="all"):
 	for a in cmd.get_model(sel).atom:
@@ -50,7 +51,7 @@ def useOccRadii(sel="all"):
 	for a in cmd.get_model(sel).atom:
 		q = a.q
 		if q >= 3:
-			print "shrik radius"
+			print("shrik radius")
 			q <- 0.1
 		cmd.alter("%s and resi %s and name %s"%(sel,a.resi,a.name),"vdw=%f"%(q))
 	cmd.rebuild()

@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-
+from __future__ import print_function
 from pymol import cmd
 from numpy import *
 
@@ -38,7 +38,7 @@ def drab( nlim=-2.0, plim=2.0 ):
 	#zero_residues("all", 1, 1)
 #Read the values in
 	fileName=cmd.get_names()[0];
-	print fileName
+	print(fileName)
 	fileName=fileName+".dat"
 	cmd.alter("all", "b=0.0")
 	#file = open(fileName, 'r')
@@ -53,7 +53,7 @@ def drab( nlim=-2.0, plim=2.0 ):
 			bval=(float(line[1])-nlim)/(plim-nlim)
 			#print bval
 			cmd.alter( selection, "b=%f"%bval )
-			print ( selection, "b=%f"%bval )
+			print(( selection, "b=%f"%bval ))
 			bVals.append([selection, bval])
 	cmd.hide("all")
 	cmd.show("cartoon")
