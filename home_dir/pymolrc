@@ -3,7 +3,13 @@ _ feedback disable,all,everything
 
 ## Two-button mouse
 set button_mode_name, 2-Btn. Selecting
-set mouse_selection_mode, 0
+
+# Make the default selection mode "Atoms" instead of "Residues"
+# set mouse_selection_mode, 0
+
+# Make the appearnce of PyMOL 2.x more closely resemble PyMOL 1.8
+# set valence, 0
+# set stick_h_scale, 1
 
 ## Aliases
 alias clear, mstop; mclear; hide all
@@ -13,6 +19,9 @@ alias shiny, set spec_power=250; set spec_refl=1.5; set antialias=2; ray
 alias stop, quit
 alias exit, quit
 alias white, bg_color white; set depth_cue=0; set ray_trace_fog=0
+
+alias hide_npol_h, hide (h. and (e. c extend 1))
+alias remove_npol_h, remove (h. and (e. c extend 1))
 
 ## Default fetch location
 # set fetch_path, ~/pdbs
