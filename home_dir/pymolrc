@@ -8,8 +8,8 @@ set button_mode_name, 2-Btn. Selecting
 # set mouse_selection_mode, 0
 
 # Make the appearnce of PyMOL 2.x more closely resemble PyMOL 1.8
-# set valence, 0
-# set stick_h_scale, 1
+set valence, 0
+set stick_h_scale, 1
 
 ## Aliases
 alias clear, mstop; mclear; hide all
