@@ -6,7 +6,7 @@ ZSH=$HOME/.oh-my-zsh
 ZSH_THEME="verbose"
 
 # Customize to your needs...
-PATH_PREFIX=$HOME/anaconda3/bin:$HOME/bin
+PATH_PREFIX=$HOME/miniconda3/bin:$HOME/bin
 
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
     # Oh my, zsh plugins
@@ -15,6 +15,9 @@ else
     # Oh my, zsh plugins
     plugins=(git osx macports screen terminalapp)
 fi
+
+# test iTerm2 shell integration -- yes, you should be using iTerm2
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 source $ZSH/oh-my-zsh.sh
 
@@ -50,15 +53,11 @@ else
     # Additional Mac settings for GNUplot, R and PyMOL
     export GNUTERM="aqua"
     export R_HOME=/Library/Frameworks/R.framework/Resources
-    # alias pymol=/Applications/MacPyMOL.app/Contents/MacOS/MacPyMOL
 
     # BSD/macOS
     export LSCOLORS='ExGxcxdxcxegedabagacad'
-    PATH=$PATH_PREFIX:$NCBI_BIN:/Library/TeX/texbin:/opt/local/bin:$PATH
-
-    # test iTerm2 shell integration -- yes, you should be using iTerm2
-    test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
- 
+    PATH=$PATH_PREFIX:$NCBI_BIN:/Library/TeX/texbin:/opt/local/bin:/Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin:$HOME/miniconda3/envs/pymol/bin:$PATH
+    
     # Mounting and unmounting digs home directory
     # Requires: (1) FUSE for macOS; (2) SSHFS; (3) root access to localhost
     # Assumes:  (1) you have the same username on localhost and the digs;
@@ -68,6 +67,9 @@ else
     mount_pt="digs"
     alias mount_digs="sudo sshfs -o defer_permissions,follow_symlinks,allow_other,reconnect,volname=$mount_pt $USER@share:/home/$USER $HOME/$mount_pt"
     alias unmount_digs="sudo umount $HOME/$mount_pt"
+
+    # enable directory-based environment activation and switching
+    eval "$(direnv hook zsh)"
 fi
 
 export PATH
