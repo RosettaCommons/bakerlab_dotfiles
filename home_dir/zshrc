@@ -19,6 +19,10 @@ fi
 # test iTerm2 shell integration -- yes, you should be using iTerm2
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
+if [[ -n ${TMUX} ]]; then
+    function iterm2_prompt_mark() {}
+fi
+
 source $ZSH/oh-my-zsh.sh
 
 # Allow things like "sudo !!" to work without the shell wanting confirmation
