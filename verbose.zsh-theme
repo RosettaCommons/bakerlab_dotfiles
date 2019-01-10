@@ -17,7 +17,7 @@ PROMPT=$PROMPT' in %{$fg_bold[green]%}${PWD/#$HOME/~}%{$reset_color%}'
 
 # add git repo information (current branch, if it's dirty) and the prompt char
 PROMPT=$PROMPT'$(git_prompt_info)
-'"%{$(iterm2_prompt_mark)%} "'%{$fg[blue]%}$(prompt_char)%{$reset_color%} '
+'"%{$(iterm2_prompt_mark)%}"'%{$fg[blue]%}$(prompt_char)%{$reset_color%} '
 
 ZSH_THEME_GIT_PROMPT_PREFIX=" on %{$fg[magenta]%}"
 ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
