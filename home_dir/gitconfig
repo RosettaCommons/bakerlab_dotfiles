@@ -9,6 +9,6 @@
 	smudge = git-lfs smudge %f
 	required = true
 [difftool]
-	        prompt = false
+	prompt = false
 [alias]
-	        ldiff = difftool -t latex
+	ldiff = difftool -t latex
