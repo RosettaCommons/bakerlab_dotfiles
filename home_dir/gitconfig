@@ -2,7 +2,7 @@
 	helper = cache --timeout=3600
 [core]
 	autocrlf = input
-	excludesfile = /Users/weitzner/.gitignore_global
+	excludesfile = ~/.gitignore_global
 [push]
 	default = simple
 [filter "lfs"]
