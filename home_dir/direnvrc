@@ -1,0 +1,32 @@
+# Layout configuration for conda environments:
+#   Specify environment name with `layout conda <envname>`
+#       or
+#   Detect name from environment.yml with `layout conda`
+#       or
+#   Setup environment in `.conda`
+
+
+layout_conda() {
+  if [ -n "${1}" ]; then
+    NAME="${1}"
+  else
+    NAME=$(grep name: environment.yml 2> /dev/null | sed -e 's/name: //')
+  fi
+
+  if [ -n "${NAME}" ]; then
+    ACTIVATE_ARGS="${NAME}"
+    CREATE_ARGS="-n ${NAME}"
+  else
+    ACTIVATE_ARGS="./.conda"
+    CREATE_ARGS="-p .conda"
+  fi;
+
+  # Hard to resolve if an environment is valid, so just try to create instead.
+  if conda create --dry-run ${CREATE_ARGS} 2> /dev/null; then
+    conda create ${CREATE_ARGS}
+    source activate ${ACTIVATE_ARGS}
+  else
+    source activate ${ACTIVATE_ARGS}
+  fi
+}
+
