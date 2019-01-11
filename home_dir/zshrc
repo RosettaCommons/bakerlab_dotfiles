@@ -70,9 +70,6 @@ else
     add_to_path /opt/local/bin
     add_to_path /Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin
     add_to_path $HOME/miniconda3/envs/pymol/bin
-
-    # enable directory-based environment activation and switching
-    eval "$(direnv hook zsh)"
 fi
 
 export PATH=$PATH_PREFIX:$PATH
