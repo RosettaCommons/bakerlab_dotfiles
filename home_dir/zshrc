@@ -80,9 +80,6 @@ else
     mount_pt="digs"
     alias mount_digs="sudo sshfs -o defer_permissions,follow_symlinks,allow_other,reconnect,volname=$mount_pt $USER@share:/home/$USER $HOME/$mount_pt"
     alias unmount_digs="sudo umount $HOME/$mount_pt"
-
-    # enable directory-based environment activation and switching
-    eval "$(direnv hook zsh)"
 fi
 
 export PATH=$PATH_PREFIX:$PATH
