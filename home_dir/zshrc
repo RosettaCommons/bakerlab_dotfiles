@@ -47,13 +47,6 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
         source /opt/rh/devtoolset-2/enable
     fi
 else
-    # NCBI C toolkit
-    NCBI_ROOT=$HOME/ncbi
-    if [[ -d $NCBI_ROOT ]]; then
-        export BLASTDB=$NCBI_ROOT/data
-        export BLASTMAT=$NCBI_ROOT/data
-    fi
-
     # Additional Mac settings for GNUplot, R and PyMOL
     export GNUTERM="aqua"
     export R_HOME=/Library/Frameworks/R.framework/Resources
