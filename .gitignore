@@ -1,3 +1,4 @@
+.DS_Store
 pymol_scripts/pymol_license.lic
 pymol_scripts/__pycache__
 pymol_scripts/*.pyc
