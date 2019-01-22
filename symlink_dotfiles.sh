@@ -24,6 +24,9 @@ link_dotfile ()
     if [[ -f $1 ]]; then
         echo "Moving existing dotfile ($1) to $old_dir"
         mv $1 $old_dir/$3
+    elif [[ -L $1 ]]; then
+        echo "Removing existing link to dotfile ($1)"
+        unlink $1
     fi
     echo "Creating symlink to $1 in home directory.\n"
     ln -s $2 $1
