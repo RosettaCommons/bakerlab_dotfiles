@@ -13,20 +13,25 @@ layout_conda() {
     NAME=$(grep name: environment.yml 2> /dev/null | sed -e 's/name: //')
   fi
 
+  CREATE_NEW_ENV=false
   if [ -n "${NAME}" ]; then
     ACTIVATE_ARGS="${NAME}"
     CREATE_ARGS="-n ${NAME}"
+    if [ "${NAME}" != `conda env list | grep "${NAME}" | awk '{print $1}'` ]; then
+      CREATE_NEW_ENV=true
+    fi
   else
     ACTIVATE_ARGS="./.conda"
     CREATE_ARGS="-p .conda"
+    if [ ! -d "${ACTIVATE_ARGS}" ]; then
+      CREATE_NEW_ENV=true
+    fi
   fi;
 
   # Hard to resolve if an environment is valid, so just try to create instead.
-  if conda create --dry-run ${CREATE_ARGS} 2> /dev/null; then
+  if [ "${CREATE_NEW_ENV}" = true ]; then
     conda create ${CREATE_ARGS}
-    source activate ${ACTIVATE_ARGS}
-  else
-    source activate ${ACTIVATE_ARGS}
   fi
+  source activate ${ACTIVATE_ARGS}
 }
 
