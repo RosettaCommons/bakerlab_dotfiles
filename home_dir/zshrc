@@ -53,7 +53,7 @@ else
 
     # BSD/macOS
     export LSCOLORS='ExGxcxdxcxegedabagacad'
-    
+
     function add_to_path() {
         if [[ -d $1 ]]; then
             PATH_PREFIX=$PATH_PREFIX:$1
@@ -70,9 +70,13 @@ export PATH=$PATH_PREFIX:$PATH
 # enable directory-based environment activation and switching
 eval "$(direnv hook zsh)"
 
+# set up alias hub -> git if `hub` is installed on the system
+if type hub &> /dev/null; then
+    eval "$(hub alias -s)"
+fi
+
 if [[ -f $HOME/.rosetta3_rc ]]; then
     source $HOME/.rosetta3_rc
 fi
 
 alias ll='ls -hlt'
-
