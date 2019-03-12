@@ -7,6 +7,8 @@
 
 
 layout_conda() {
+  \. "$HOME/miniconda3/etc/profile.d/conda.sh" || return $?
+
   if [ -n "${1}" ]; then
     NAME="${1}"
   else
@@ -17,7 +19,7 @@ layout_conda() {
   if [ -n "${NAME}" ]; then
     ACTIVATE_ARGS="${NAME}"
     CREATE_ARGS="-n ${NAME}"
-    if [ "${NAME}" != `conda env list | grep "${NAME}" | awk '{print $1}'` ]; then
+    if [[ "${NAME}" != `conda env list | grep "${NAME}" | awk '{print $1}'` ]]; then
       CREATE_NEW_ENV=true
     fi
   else
@@ -32,6 +34,5 @@ layout_conda() {
   if [ "${CREATE_NEW_ENV}" = true ]; then
     conda create ${CREATE_ARGS}
   fi
-  source activate ${ACTIVATE_ARGS}
+  conda activate ${ACTIVATE_ARGS}
 }
-
