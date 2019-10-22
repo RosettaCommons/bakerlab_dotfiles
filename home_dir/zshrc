@@ -13,7 +13,7 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
     plugins=(git)
 else
     # Oh my, zsh plugins
-    plugins=(git osx macports screen terminalapp)
+    plugins=(git osx macports screen iterm2)
 fi
 
 # test iTerm2 shell integration -- yes, you should be using iTerm2
