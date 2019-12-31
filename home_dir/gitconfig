@@ -19,4 +19,4 @@
 	signingkey = 09E370D51B097A3B
 
 [commit]
-	gpgsign = true
+	gpgsign = false
