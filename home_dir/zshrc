@@ -13,7 +13,7 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
     plugins=(git)
 else
     # Oh my, zsh plugins
-    plugins=(git osx macports screen iterm2)
+    plugins=(git osx macports screen iterm2 colored-man-pages)
 fi
 
 # test iTerm2 shell integration -- yes, you should be using iTerm2
@@ -98,3 +98,16 @@ unset __conda_setup
 
 # enable directory-based environment activation and switching
 eval "$(direnv hook zsh)"
+
+# set up zsh to include the current environment in the prompt
+# whether direnv is switching envs or if ens are being changed
+# manually. Reuires issuing
+# 'conda config --set changeps1 False'
+# to prevent the prompt from accumulating environmnets.
+setopt PROMPT_SUBST
+show_conda_env() {
+  if [[ -n "$CONDA_DEFAULT_ENV" ]]; then
+    echo "($(basename $CONDA_DEFAULT_ENV))"
+  fi
+}
+PS1='$(show_conda_env)'$PS1
