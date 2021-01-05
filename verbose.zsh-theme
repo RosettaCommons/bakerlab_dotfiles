@@ -13,7 +13,7 @@ PROMPT='
 %{$fg[magenta]%}%n%{$reset_color%} at %{$fg[yellow]%}%m%{$reset_color%}'
 
 # display the CWD, collapse $HOME to ~
-PROMPT=$PROMPT' in %{$fg_bold[green]%}${PWD/#$HOME/~}%{$reset_color%}'
+PROMPT=$PROMPT' in %{$fg[green]%}${PWD/#$HOME/~}%{$reset_color%}'
 
 EXTRA_SPACE=""
 if [[ -z ${TMUX} && -e "${HOME}/.iterm2_shell_integration.zsh" ]]; then

@@ -2,25 +2,37 @@
 # Environment variables that will make your life easier
 
 export ROSETTA=$HOME/Rosetta
-export rosetta_main=$ROSETTA/main
+export rosetta_source=$ROSETTA/source
 export rosetta_demos=$ROSETTA/demos
 export rosetta_tools=$ROSETTA/tools
 
-export rosetta_src_dir=$rosetta_main/source
-export ROSETTA3_DB=$rosetta_main/database
+# export ROSETTA3_DB=$ROSETTA/database
 
-number_of_threads=1
-if [[ "$OSTYPE" == "linux-gnu" ]]; then
+# useful for active development, but less so for day-to-usage
+# number_of_threads=1
+# if [[ "$OSTYPE" == "linux-gnu" ]]; then
 	# GNU/Linux
-	number_of_threads=$(( $(grep -c ^processor /proc/cpuinfo) - 1 ))
-else
-	# BSD/macOS
-	number_of_threads=$(( $(sysctl -n hw.ncpu) - 1 ))
-fi
+#	number_of_threads=$(( $(grep -c ^processor /proc/cpuinfo) - 1 ))
+# else
+#	# BSD/macOS
+#	number_of_threads=$(( $(sysctl -n hw.ncpu) - 1 ))
+# fi
+# alias build_rosetta_for_testing="cd $rosetta_src_dir; nice ./scons.py -j$number_of_threads && nice ./scons.py -j$number_of_threads cat=test && nice ./scons.py -j$number_of_threads mode=release bin"
 
-alias build_rosetta_for_testing="cd $rosetta_src_dir; nice ./scons.py -j$number_of_threads && nice ./scons.py -j$number_of_threads cat=test && nice ./scons.py -j$number_of_threads mode=release bin"
+ROSETTA_CHANNEL=${HOME}/opb_conda
+function _build_conda_pkg() {
+	pushd $ROSETTA && conda activate rosetta-bld
 
-export PYROSETTA=$HOME/PyRosetta
-function update_pyrosetta() {
-	current_dir=$PWD;cd $PYROSETTA && git fetch --all && git reset --hard origin/master && git clean -fd && cd setup && python setup.py install && echo PyRosetta has been successfully updated.; cd $current_dir;
+	if [[ $1 == "mac" ]]; then
+		./source/conda/build rosetta --croot=$ROSETTA_CHANNEL
+	elif [[ $1 == "linux" ]]; then
+		./source/conda/rosetta_docker_build.sh $ROSETTA_CHANNEL
+	else
+		echo "No known target '$1'. Valid targets are 'mac' and 'linux'"
+	fi
+
+	popd
+	conda deactivate
 }
+
+alias build_rosetta_conda="_build_conda_pkg mac && _build_conda_pkg linux"
