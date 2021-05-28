@@ -48,7 +48,6 @@ from pymol import cmd
 import sys
 
 run ~/Rosetta/tools/antibody/colorcdrs.py
-run ~/bin/obj_arrows.py
 
 alias ribbonize,\
     hide; show cartoon; set cartoon_fancy_helices, 1; \
@@ -72,6 +71,7 @@ run ~/pymol_scripts/PDBinfo.py
 
 run ~/pymol_scripts/color_h.py
 run ~/pymol_scripts/pymol_brian.py
+run ~/pymol_scripts/obj_arrows.py
 
 aaindex.init("~/pymol_scripts/aaindex")
 
@@ -118,4 +118,3 @@ alias hetsee, hide all; show cartoon; alignto asym*; zoom; select interfaceA, as
 ## Explicitly re-enable feedback before popping
 _ feedback enable, cmd parser, warnings errors results
 _ feedback pop
-

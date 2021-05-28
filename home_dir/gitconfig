@@ -15,8 +15,8 @@
 	ldiff = difftool -t latex
 [user]
 	name = Brian D. Weitzner
-	email = bweitzner@lyellbio.com
+	email = brian.weitzner@gmail.com
 	signingkey = 09E370D51B097A3B
 
 [commit]
-	gpgsign = false
+	gpgsign = true

@@ -106,8 +106,8 @@ unset __conda_setup
 eval "$(direnv hook zsh)"
 
 # set up zsh to include the current environment in the prompt
-# whether direnv is switching envs or if ens are being changed
-# manually. Reuires issuing
+# whether direnv is switching envs or if envs are being changed
+# manually. Requires issuing
 # 'conda config --set changeps1 False'
 # to prevent the prompt from accumulating environmnets.
 setopt PROMPT_SUBST
