@@ -8,31 +8,31 @@ ZSH_THEME="verbose"
 # Customize to your needs...
 PATH_PREFIX=$HOME/bin
 
-if [[ "$OSTYPE" == "linux-gnu" ]]; then
-    # Oh my, zsh plugins
-    plugins=(git docker docker-compose)
-else
-    # Oh my, zsh plugins
-    plugins=(git osx macports screen iterm2 colored-man-pages docker docker-compose)
+# Oh my, zsh plugins
+plugins=(colored-man-pages direnv docker docker-compose git github tmux)
+# Mac-specific configuration
+if [[ ${OSTYPE} == darwin* ]]; then
+    plugins+=(iterm2 macports osx)
+    # test iTerm2 shell integration -- yes, you should be using iTerm2
+    test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 fi
 
-# test iTerm2 shell integration -- yes, you should be using iTerm2
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
+# clear fancy prompt mark char where it isn't supported
 if [[ -n ${TMUX} || ${OSTYPE} == "linux-gnu" ]]; then
     function iterm2_prompt_mark() {}
 fi
 
 source $ZSH/oh-my-zsh.sh
-export PROMPT
 
 # Allow things like "sudo !!" to work without the shell wanting confirmation
 setopt no_hist_verify
 
+LS_COLORS='di=34:ln=36:so=32:pi=33:ex=32:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43'
+
 # This has to be done after oh-my-zsh.sh is sourced
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
     # GNU/Linux
-    export LS_COLORS='di=34:ln=36:so=32:pi=33:ex=32:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43'
+    export LS_COLORS
 
     # this prevents `git status` from being called when `cd`ing into a git repo,
     # which can be way too slow for shared filesystems.
@@ -69,11 +69,6 @@ fi
 
 export PATH=$PATH_PREFIX:$PATH
 
-# set up alias hub -> git if `hub` is installed on the system
-if type hub &> /dev/null; then
-    eval "$(hub alias -s)"
-fi
-
 if [[ -f $HOME/.rosetta3_rc ]]; then
     source $HOME/.rosetta3_rc
 fi
@@ -81,7 +76,7 @@ fi
 # check if we are using GNU coreutils on a BSD-based system and adjust the `ls` configuration
 if [[ -f `which gls` && "${OSTYPE}" == (darwin|freebsd)* ]]; then
     unset LSCOLORS; unalias ls
-    export LS_COLORS='di=34:ln=36:so=32:pi=33:ex=32:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43'
+    export LS_COLORS
     alias ls='gls --quoting-style=literal --color=tty'
 fi
 
@@ -101,9 +96,6 @@ else
 fi
 unset __conda_setup
 # <<< conda initialize <<<
-
-# enable directory-based environment activation and switching
-eval "$(direnv hook zsh)"
 
 # set up zsh to include the current environment in the prompt
 # whether direnv is switching envs or if envs are being changed
