@@ -27,11 +27,11 @@ source $ZSH/oh-my-zsh.sh
 # Allow things like "sudo !!" to work without the shell wanting confirmation
 setopt no_hist_verify
 
+# color formatting for the GNU implementation of `ls`
 LS_COLORS='di=34:ln=36:so=32:pi=33:ex=32:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43'
 
 # This has to be done after oh-my-zsh.sh is sourced
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
-    # GNU/Linux
     export LS_COLORS
 
     # this prevents `git status` from being called when `cd`ing into a git repo,
@@ -52,7 +52,7 @@ else
     export GNUTERM="aqua"
     export R_HOME=/Library/Frameworks/R.framework/Resources
 
-    # BSD/macOS
+    # color formatting for the BSD implementation of `ls`
     export LSCOLORS='ExGxcxdxcxegedabagacad'
 
     function add_to_path() {
@@ -69,18 +69,18 @@ fi
 
 export PATH=$PATH_PREFIX:$PATH
 
-if [[ -f $HOME/.rosetta3_rc ]]; then
-    source $HOME/.rosetta3_rc
-fi
-
-# check if we are using GNU coreutils on a BSD-based system and adjust the `ls` configuration
+# now that PATH is finalized, check if we are using GNU coreutils on a BSD-based system
+# and adjust the `ls` configuration accordingly
 if [[ -f `which gls` && "${OSTYPE}" == (darwin|freebsd)* ]]; then
     unset LSCOLORS; unalias ls
     export LS_COLORS
     alias ls='gls --quoting-style=literal --color=tty'
 fi
-
 alias ll='ls -hlt'
+
+if [[ -f $HOME/.rosetta3_rc ]]; then
+    source $HOME/.rosetta3_rc
+fi
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
