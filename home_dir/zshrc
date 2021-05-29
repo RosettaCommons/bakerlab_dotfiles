@@ -10,10 +10,10 @@ PATH_PREFIX=$HOME/bin
 
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
     # Oh my, zsh plugins
-    plugins=(git)
+    plugins=(git docker docker-compose)
 else
     # Oh my, zsh plugins
-    plugins=(git osx macports screen iterm2 colored-man-pages)
+    plugins=(git osx macports screen iterm2 colored-man-pages docker docker-compose)
 fi
 
 # test iTerm2 shell integration -- yes, you should be using iTerm2
