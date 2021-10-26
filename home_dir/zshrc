@@ -51,6 +51,7 @@ else
     # Additional Mac settings for GNUplot, R and PyMOL
     export GNUTERM="aqua"
     export R_HOME=/Library/Frameworks/R.framework/Resources
+    export SYSTEM_VERSION_COMPAT=0
 
     # color formatting for the BSD implementation of `ls`
     export LSCOLORS='ExGxcxdxcxegedabagacad'
