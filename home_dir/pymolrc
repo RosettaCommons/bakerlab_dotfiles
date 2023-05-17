@@ -45,10 +45,10 @@ set defer_builds_mode, 3
 set async_builds, 1
 
 from pymol import cmd
-import os, sys
-import pymol_rosetta_utils as pr
+import sys
 
 run ~/Rosetta/tools/antibody/colorcdrs.py
+run ~/bin/obj_arrows.py
 
 alias ribbonize,\
     hide; show cartoon; set cartoon_fancy_helices, 1; \
@@ -58,8 +58,9 @@ alias ribbonize,\
 
 
 ##### Big chunk from the bakerlab historic pymolrc ####
-# add user's home directory to path -- this is where dotfiles will place symlinks
-sys.path.append(os.path.expanduser("~"))
+
+sys.path.append("~/pymol_scripts")
+
 from pymol_scripts import *
 
 run ~/pymol_scripts/tmalign.py
@@ -71,9 +72,9 @@ run ~/pymol_scripts/PDBinfo.py
 
 run ~/pymol_scripts/color_h.py
 run ~/pymol_scripts/pymol_brian.py
-run ~/pymol_scripts/obj_arrows.py
 
 aaindex.init("~/pymol_scripts/aaindex")
+
 
 alias pbi, color gray80, chainA; color white, chainB; aaindex2b DVLA000001; spectrum b, red_green, chainB; util.cnc;
 alias ipbi, color gray80, chainA; color white, chainB; aaindex2b DVLA000001; spectrum b, red_green, chainB and interface; util.cnc;
@@ -111,18 +112,10 @@ alias hetsee, hide all; show cartoon; alignto asym*; zoom; select interfaceA, as
 
 
 
-alias opb-style, reinitialize settings; bg white; set light_count, 2; set cartoon_oval_width, 0.4; set cartoon_loop_radius, 0.4; set cartoon_rect_width, 0.4; set ray_trace_mode, 1; set ray_opaque_background, 0
-set_color opb_tech1, [78, 186, 176]
-set_color opb_tech2, [10, 146, 163]
-set_color opb_tech2_light, [42, 190, 211]
-set_color opb_tech3, [48, 91, 114]
-set_color opb_tech3_dark, [24, 58, 77]
-set_color opb_coral, [254, 74, 74]
-set_color opb_blue, [13, 93, 157]
-
 #######################################################
 
 ## END COMMANDS
 ## Explicitly re-enable feedback before popping
 _ feedback enable, cmd parser, warnings errors results
 _ feedback pop
+

@@ -8,31 +8,31 @@ ZSH_THEME="verbose"
 # Customize to your needs...
 PATH_PREFIX=$HOME/bin
 
-# Oh my, zsh plugins
-plugins=(colored-man-pages direnv docker docker-compose git github tmux)
-# Mac-specific configuration
-if [[ ${OSTYPE} == darwin* ]]; then
-    plugins+=(iterm2 macports macos)
-    # test iTerm2 shell integration -- yes, you should be using iTerm2
-    test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+    # Oh my, zsh plugins
+    plugins=(git)
+else
+    # Oh my, zsh plugins
+    plugins=(git osx macports screen iterm2)
 fi
 
-# clear fancy prompt mark char where it isn't supported
+# test iTerm2 shell integration -- yes, you should be using iTerm2
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
 if [[ -n ${TMUX} || ${OSTYPE} == "linux-gnu" ]]; then
     function iterm2_prompt_mark() {}
 fi
 
 source $ZSH/oh-my-zsh.sh
+export PROMPT
 
 # Allow things like "sudo !!" to work without the shell wanting confirmation
 setopt no_hist_verify
 
-# color formatting for the GNU implementation of `ls`
-LS_COLORS='di=34:ln=36:so=32:pi=33:ex=32:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43'
-
 # This has to be done after oh-my-zsh.sh is sourced
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
-    export LS_COLORS
+    # GNU/Linux
+    export LS_COLORS='di=1;34:ln=1;36:so=32:pi=33:ex=32:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43'
 
     # this prevents `git status` from being called when `cd`ing into a git repo,
     # which can be way too slow for shared filesystems.
@@ -51,9 +51,8 @@ else
     # Additional Mac settings for GNUplot, R and PyMOL
     export GNUTERM="aqua"
     export R_HOME=/Library/Frameworks/R.framework/Resources
-    export SYSTEM_VERSION_COMPAT=0
 
-    # color formatting for the BSD implementation of `ls`
+    # BSD/macOS
     export LSCOLORS='ExGxcxdxcxegedabagacad'
 
     function add_to_path() {
@@ -62,35 +61,48 @@ else
         fi
     }
 
-    add_to_path /opt/local/libexec/gnubin/
     add_to_path /opt/local/bin
     add_to_path /Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin
     add_to_path $HOME/miniconda3/envs/pymol/bin
+
+    # Mounting and unmounting digs home directory
+    # Requires: (1) FUSE for macOS; (2) SSHFS; (3) root access to localhost
+    # Assumes:  (1) you have the same username on localhost and the digs;
+    #           (2) the mount point is $HOME/digs and is an empty directory that exists;
+    #           (3) you followed the instructions on the wiki: http://wiki.baker/index.php/Mounting_IPD_Filesystems
+    # Set the name of the mount point here
+    mount_pt="digs"
+    alias mount_digs="sudo sshfs -o defer_permissions,follow_symlinks,allow_other,reconnect,volname=$mount_pt $USER@share:/home/$USER $HOME/$mount_pt"
+    alias unmount_digs="sudo umount $HOME/$mount_pt"
 fi
 
 export PATH=$PATH_PREFIX:$PATH
 
-# now that PATH is finalized, check if we are using GNU coreutils on a BSD-based system
-# and adjust the `ls` configuration accordingly
-if [[ -f `which gls` && "${OSTYPE}" == (darwin|freebsd)* ]]; then
-    unset LSCOLORS; unalias ls
-    export LS_COLORS
-    alias ls='gls --quoting-style=literal --color=tty'
+# set up alias hub -> git if `hub` is installed on the system
+if type hub &> /dev/null; then
+    eval "$(hub alias -s)"
 fi
-alias ll='ls -hlt'
 
 if [[ -f $HOME/.rosetta3_rc ]]; then
     source $HOME/.rosetta3_rc
 fi
 
+alias ll='ls -hlt'
+
+# Baker lab machines
+alias digs="ssh digs"
+alias jojo="ssh jojo"
+
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$($HOME'/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
+if [ $? -eq 1 ]; then
     eval "$__conda_setup"
 else
     if [ -f "$HOME/miniconda3/etc/profile.d/conda.sh" ]; then
         . "$HOME/miniconda3/etc/profile.d/conda.sh"
+        export PATH="$HOME/miniconda3/bin:$PATH"
+        conda activate base
     else
         export PATH="$HOME/miniconda3/bin:$PATH"
     fi
@@ -98,15 +110,5 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
-# set up zsh to include the current environment in the prompt
-# whether direnv is switching envs or if envs are being changed
-# manually. Requires issuing
-# 'conda config --set changeps1 False'
-# to prevent the prompt from accumulating environmnets.
-setopt PROMPT_SUBST
-show_conda_env() {
-  if [[ -n "$CONDA_DEFAULT_ENV" ]]; then
-    echo "($(basename $CONDA_DEFAULT_ENV))"
-  fi
-}
-PS1='$(show_conda_env)'$PS1
+# enable directory-based environment activation and switching
+eval "$(direnv hook zsh)"
