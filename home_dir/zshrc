@@ -12,7 +12,7 @@ PATH_PREFIX=$HOME/bin
 plugins=(colored-man-pages direnv docker docker-compose git github tmux)
 # Mac-specific configuration
 if [[ ${OSTYPE} == darwin* ]]; then
-    plugins+=(iterm2 macports osx)
+    plugins+=(iterm2 macports macos)
     # test iTerm2 shell integration -- yes, you should be using iTerm2
     test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 fi

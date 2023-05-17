@@ -1,5 +1,5 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =3
-let g:netrw_dirhist_1='/Users/weitzner/Consulting/docking/11F1/prepack'
-let g:netrw_dirhist_2='/Users/weitzner/.rosetta'
-let g:netrw_dirhist_3='/Users/weitzner/RIF/scheme/.git'
+let g:netrw_dirhistcnt =3
+let g:netrw_dirhist_3='/Users/bweitzner/Projects/PlasmidWebApp/.ebextensions-al2'
+let g:netrw_dirhist_2='/Users/bweitzner/Projects/PlasmidWebApp/.ebextensions-extras'
+let g:netrw_dirhist_1='/Users/bweitzner/Rosetta/source/conda/recipes/pyrosetta'

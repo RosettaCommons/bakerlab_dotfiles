@@ -45,7 +45,8 @@ set defer_builds_mode, 3
 set async_builds, 1
 
 from pymol import cmd
-import sys
+import os, sys
+import pymol_rosetta_utils as pr
 
 run ~/Rosetta/tools/antibody/colorcdrs.py
 
@@ -57,9 +58,8 @@ alias ribbonize,\
 
 
 ##### Big chunk from the bakerlab historic pymolrc ####
-
-sys.path.append("~/pymol_scripts")
-
+# add user's home directory to path -- this is where dotfiles will place symlinks
+sys.path.append(os.path.expanduser("~"))
 from pymol_scripts import *
 
 run ~/pymol_scripts/tmalign.py
@@ -74,7 +74,6 @@ run ~/pymol_scripts/pymol_brian.py
 run ~/pymol_scripts/obj_arrows.py
 
 aaindex.init("~/pymol_scripts/aaindex")
-
 
 alias pbi, color gray80, chainA; color white, chainB; aaindex2b DVLA000001; spectrum b, red_green, chainB; util.cnc;
 alias ipbi, color gray80, chainA; color white, chainB; aaindex2b DVLA000001; spectrum b, red_green, chainB and interface; util.cnc;
@@ -111,6 +110,15 @@ alias bbo, hide all; show sticks, name Ca+C+O+N+CA
 alias hetsee, hide all; show cartoon; alignto asym*; zoom; select interfaceA, asym and chain A within 10 of (asym and chain B); select interfaceB, asym and chain B within 10 of (asym and chain A); select interfaceAA, not hydro within 3 of interfaceA; select interfaceBB, not hydro within 3 of interfaceB; show lines, interfaceAA; show lines, interfaceBB; select interfaceOri, resi and asym and interfaceAA or asym and interfaceBB; show sticks, interfaceOri; disable interface*; disable *_2_S* or *_3_S* or *_4_S* or or *_5_S*
 
 
+
+alias opb-style, reinitialize settings; bg white; set light_count, 2; set cartoon_oval_width, 0.4; set cartoon_loop_radius, 0.4; set cartoon_rect_width, 0.4; set ray_trace_mode, 1; set ray_opaque_background, 0
+set_color opb_tech1, [78, 186, 176]
+set_color opb_tech2, [10, 146, 163]
+set_color opb_tech2_light, [42, 190, 211]
+set_color opb_tech3, [48, 91, 114]
+set_color opb_tech3_dark, [24, 58, 77]
+set_color opb_coral, [254, 74, 74]
+set_color opb_blue, [13, 93, 157]
 
 #######################################################
 
